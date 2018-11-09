@@ -1,0 +1,286 @@
+.386
+.model flat, stdcall
+option casemap:none
+include \masm32\include\windows.inc
+include \masm32\include\kernel32.inc
+includelib \masm32\lib\kernel32.lib
+include \masm32\include\user32.inc
+includelib \masm32\lib\user32.lib
+include \masm32\include\gdi32.inc
+includelib \masm32\lib\gdi32.lib
+include \masm32\include\comctl32.inc
+includelib \masm32\lib\comctl32.lib
+include \masm32\include\masm32.inc
+includelib \masm32\lib\masm32.lib
+
+DlgProc PROTO :DWORD,:DWORD,:DWORD,:DWoRD
+ABOUTDLGPROC PROTO :DWORD,:DWORD,:DWORD,:DWORD
+AUSWERTUNG_PROC PROTO :DWORD,:DWORD,:DWORD,:DWORD
+
+IDM_MENU      equ     3000
+IDM_INFO        equ  3001
+IDM_ABOUT equ 3002
+
+IDC_PROGRESS01      equ         2001
+IDC_STATUS01        equ         2002
+IDC_BUTTON          equ         2003
+
+IDC_BUTT04          equ         2006
+IDC_BUTT02          equ         2005
+IDC_GRP01           equ         2008
+IDC_BUTT05          equ         2007
+IDC_TIMER			equ			2009
+IDC_BUTTON3			equ			2010
+IDC_STATUS			equ			2011
+IDC_TRACKBAR		equ			2012
+IDC_TAB01			equ			2013
+IDC_BUTT06			equ			2014
+IDC_STATIC			equ			2015
+
+
+.data
+
+AP_NAME	DB	"MyDialog",0
+ABOUT_DLG	DB "ABOUTDLG",0
+PROGRESS_CLASS_NAME DB "msctls_progress32",0
+hInstance	DD	?
+MSGCAPTION DB "Test Programm 3",0
+ABOUTTEXT DB "Test Programm3 dient leidglich zum",13,10,"Testen der Standard Controlelemente ",13,10,"der WinAPI"
+		  DB 13,10,"TestProgramm2 (C) 2005-2006 by Josef Biehler",13,10
+		  DB "biehler-josef.de",13,10
+		  DB "support@biehler-josef.de",0
+BTN_CLASSNAME DB "button",0
+AUSWERTEN DB "Umfrage",0
+AUSWERTUNG_DLG DB "AUSWERTUNG",0
+CHOOSE1 DB "Sie finden das Programm nützlich!",0
+CHOOSE2 DB "Sie finden das Programm sinnlos!",0
+CHOOSE3 DB "Bitte erst auswählen.",0
+BUTT02TEXT DB "Auswerten",0
+TAB_SHEET_1 DB "Seite1",0
+TAB_SHEET_2 DB "Seite2",0
+STATIC01TEXT DB "Hier sieht man diesen Text",13,10,"Im nächsten Tab nicht mehr",0
+STATIC_CLASSNAME DB "static",0
+NUTZLICh DB "Nützlich",0
+SINNLOS DB "Sinnlos",0
+SFDP DB "Sie finden das Programm: ",0
+hWndPB	DD	0
+TIMERID DD 0
+COUNT DD 100
+BUFFER DB 1000 DUP(0)
+BYTE1 DB 0
+BYTE2 DB 0
+TIMERID2 DD 0
+POSTB	DD	0
+SB_ARRAY1 DD 130
+SB_ARRAY2 DD 200
+TAB_PAGE1 DB 0
+TAB_PAGE2 DB 0
+w DD 81
+h DD 64
+
+TAB01 DD TCIF_TEXT
+	  DD 0
+	  DD 0
+	  DD TAB_SHEET_1
+	  DD 0
+	  DD -1
+	  DD 0
+TAB02 DD TCIF_TEXT
+	  DD 0
+	  DD 0
+	  DD TAB_SHEET_2
+	  DD 0
+	  DD -1
+	  DD 0
+.code
+start:
+
+	INVOKE GetModuleHandle, 0
+	MOV hInstance,EAX
+	
+	INVOKE DialogBoxParam,hInstance,ADDR AP_NAME,0,ADDR DlgProc,0
+	INVOKE ExitProcess,EAX
+	INVOKE InitCommonControls
+	
+DlgProc proc hWnd:DWORD,uMsg:DWORD,wParam:DWORD,lParam:DWORD
+	LOCAL hdc:HDC
+	LOCAL ps:PAINTSTRUCT
+	.IF uMsg==WM_CLOSE
+		INVOKE EndDialog,hWnd,0
+	.ELSEIF uMsg==WM_COMMAND
+		.IF lParam != 0
+			MOV EAX,wParam
+			.IF AX==IDC_BUTTON
+				INVOKE SetTimer,hWnd,IDC_TIMER,100,0
+				MOV TIMERID,EAX
+				INVOKE SendMessage,hWndPB,PBM_SETSTEP,10,0
+				INVOKE GetDlgItem,hWnd,IDC_BUTTON
+				INVOKE DestroyWindow,EAX
+			.ENDIF
+		.ELSE
+			INVOKE MessageBox,hWnd,ADDR ABOUTTEXT,ADDR MSGCAPTION,MB_OK or MB_APPLMODAL
+		.ENDIF
+	.ELSEIF uMsg==WM_INITDIALOG
+		INVOKE GetDlgItem,hWnd,IDC_BUTTON
+		INVOKE DestroyWindow,EAX
+		;INVOKE CreateWindowEx,0,ADDR BTN_CLASSNAME,0,WS_CHILD or WS_VISIBLE or BS_CHECKBOX,100,18,149,26,hWnd,IDC_BUTTON,hInstance,0
+		INVOKE CreateWindowEx,0,ADDR BTN_CLASSNAME,0,WS_CHILD or WS_VISIBLE,216,18,149,26,hWnd,IDC_BUTTON,hInstance,0
+		INVOKE GetDlgItem,hWnd,IDC_BUTTON
+		INVOKE SetWindowText,EAX,ADDR MSGCAPTION
+		;INVOKE CreateWindowEx,0,ADDR PROGRESS_CLASS_NAME,0,WS_CHILD or WS_VISIBLE,38,77,312,31,hWnd,IDC_PROGRESS01,hInstance,0
+		INVOKE GetDlgItem,hWnd,IDC_PROGRESS01
+		MOV hWndPB,EAX
+		;INVOKE FloatToStr,COUNT8,ADDR BUFFER
+		;INVOKE MessageBox,hWnd,ADDR BUFFER,ADDR BUFFER,MB_OK
+	.ELSEIF uMsg==WM_TIMER
+		;INVOKE MessageBox,hWnd,ADDR MSGCAPTION,ADDR MSGCAPTION,MB_OK
+		INVOKE SendMessage,hWndPB,PBM_STEPIT,0,0
+		SUB COUNT,10
+		.IF COUNT==0
+			;INVOKE SetFocus,EAX
+			INVOKE CreateWindowEx,0,ADDR BTN_CLASSNAME,0,WS_CHILD or WS_VISIBLE,216,18,149,26,hWnd,IDC_BUTTON,hInstance,0
+			INVOKE SetWindowText,EAX,ADDR MSGCAPTION
+			INVOKE KillTimer,hWnd,TIMERID
+			INVOKE DialogBoxParam,hInstance,ADDR ABOUT_DLG,hWnd,ADDR ABOUTDLGPROC,0
+			MOV COUNT,100
+		.ENDIF
+	.ELSE
+		MOV EAX,FALSE
+		RET
+	.ENDIF
+		MOV EAX,TRUE
+		RET
+DlgProc ENDP
+
+ABOUTDLGPROC proc hWnd1:DWORD,uMsg:DWORD,wParam:DWORD,lParam:DWORD
+	LOCAL ps:PAINTSTRUCT
+	LOCAL hdc:HDC
+	LOCAL rect:RECT
+	.IF uMsg==WM_CLOSE
+		INVOKE EndDialog,hWnd1,0
+	.ELSEIF uMsg==WM_INITDIALOG
+		INVOKE CreateWindowEx,0,ADDR BTN_CLASSNAME,ADDR AUSWERTEN,WS_CHILD or WS_VISIBLE,58,176,222,26,hWnd1,IDC_BUTTON3,hInstance,0
+	.ELSEIF uMsg==WM_COMMAND
+		.IF lParam!=0
+			MOV EAX,wParam
+			.IF AX==IDC_BUTTON3
+				INVOKE DialogBoxParam,hInstance,ADDR AUSWERTUNG_DLG,hWnd1,ADDR AUSWERTUNG_PROC,0
+			.ENDIF
+		.ENDIF
+	.ELSEIF uMsg==WM_PAINT
+		INVOKE BeginPaint,hWnd1,ADDR ps
+		MOV hdc,EAX
+		INVOKE GetClientRect,hWnd1,ADDR rect
+		INVOKE DrawText,hdc,ADDR ABOUTTEXT,-1,ADDR rect,DT_CENTER or DT_VCENTER
+		INVOKE EndPaint,hWnd1,ADDR ps
+	.ELSE
+		MOV EAX,FALSE
+		RET
+	.ENDIF
+		MOV EAX,TRUE
+		RET
+ABOUTDLGPROC ENDP
+	
+AUSWERTUNG_PROC PROC hWnd:DWORD,uMsg:DWORD,wParam:DWORD,lParam:DWORD
+	.IF uMsg==WM_CLOSE
+		INVOKE EndDialog,hWnd,0
+	.ELSEIF uMsg==WM_NOTIFY
+	PUSH ESI
+		MOV ESI,lParam
+		MOV EBX,[ESI]
+		INVOKE GetDlgItem,hWnd,IDC_TAB01
+		.IF EBX==EAX
+			ADD ESI,4
+			MOV EAX,[ESI]
+			.IF EAX==IDC_TAB01
+				ADD ESI,4
+				MOV EAX,[ESI]
+				.IF EAX==TCN_SELCHANGE
+					;INVOKE MessageBox,hWnd,0,0,MB_OK
+					.IF TAB_PAGE1==0
+							;INVOKE MessageBox,hWnd,0,0,MB_OK
+							INVOKE GetDlgItem,hWnd,IDC_STATIC
+							INVOKE ShowWindow,EAX,SW_HIDE
+							MOV TAB_PAGE1,1	
+					.ELSEIF TAB_PAGE1==1
+							MOV TAB_PAGE1,0
+							INVOKE GetDlgItem,hWnd,IDC_STATIC
+							INVOKE ShowWindow,EAX,SW_SHOWDEFAULT
+					.ENDIF
+					
+					
+				.ENDIF
+			.ENDIF
+		.ENDIF
+	POP ESI
+		
+	.ELSEIF uMsg==WM_INITDIALOG
+		  ;invoke SendDlgItemMessage,hWin,ID_SPIN1,UDM_SETPOS32,0,NewPosition
+		  ;INVOKE SendDlgItemMessage,hWnd,IDC_TRACKBAR,TBM_SETRANGE,TRUE,5
+		  INVOKE SendDlgItemMessage,hWnd,IDC_STATUS,SB_SETPARTS,2,ADDR SB_ARRAY1
+		  INVOKE SendDlgItemMessage,hWnd,IDC_STATUS,SB_SETTEXT,0,ADDR SFDP
+		  invoke SendDlgItemMessage,hWnd,IDC_TRACKBAR,TBM_SETRANGEMIN,FALSE,0
+          invoke SendDlgItemMessage,hWnd,IDC_TRACKBAR,TBM_SETRANGEMAX,FALSE,100
+          INVOKE SendDlgItemMessage,hWnd,IDC_TRACKBAR,TBM_SETTIC,0,50
+          INVOKE GetDlgItem,hWnd,IDC_TRACKBAR
+          INVOKE SetScrollRange,EAX,SB_CTL,0,100,TRUE
+          INVOKE SendDlgItemMessage,hWnd,IDC_TAB01,TCM_INSERTITEM,1,ADDR TAB01
+          INVOKE SendDlgItemMessage,hWnd,IDC_TAB01,TCM_INSERTITEM,2,ADDR TAB02
+          ;INVOKE CreateWindowEx,0,ADDR BTN_CLASSNAME,0,WS_CHILD or WS_VISIBLE,43,175,99,37,hWnd,IDC_BUTT06,hInstance,0
+          INVOKE GetDlgItem,hWnd,IDC_TAB01
+		  INVOKE CreateWindowEx,0,ADDR STATIC_CLASSNAME,ADDR STATIC01TEXT,WS_CHILD or WS_VISIBLE or SS_SUNKEN,16,167,179,53,hWnd,IDC_STATIC,hInstance,0
+		  ;INVOKE SetTimer,hWnd,IDC_TIMER2,100,0
+		  ;MOV TIMERID2,EAX
+		  ;MOV COUNT,100
+	.ELSEIF uMsg==WM_HSCROLL
+		INVOKE GetDlgItem,hWnd,IDC_TRACKBAR
+		.IF EAX==lParam
+			MOV EAX,wParam
+			SHL EAX,16
+			SHR EAX,16
+			.IF EAX==SB_THUMBTRACK
+				INVOKE GetDlgItem,hWnd,IDC_BUTT02
+				INVOKE DestroyWindow,EAX
+				MOV EAX,wParam
+				SHR EAX,16
+				MOV EBX,h
+				ADD EBX,EAX
+				MOV ECX,w
+				ADD ECX,EAX
+				INVOKE CreateWindowEx,0,ADDR BTN_CLASSNAME,ADDR BUTT02TEXT,WS_CHILD or WS_VISIBLE,249,18,ECX,EBX,hWnd,IDC_BUTT02,hInstance,0
+			.ENDIF
+		.ENDIF
+	.ELSEIF uMsg==WM_COMMAND
+		MOV EAX,wParam
+		MOV EBX,wParam
+		SHR EBX,16
+		.IF AX==IDC_BUTT04
+			INVOKE CheckDlgButton,hWnd,IDC_BUTT05,BST_UNCHECKED
+			INVOKE SendDlgItemMessage,hWnd,IDC_STATUS,SB_SETTEXT,1,ADDR NUTZLICh
+		.ELSEIF AX==IDC_BUTT05
+			INVOKE CheckDlgButton,hWnd,IDC_BUTT04,BST_UNCHECKED
+			INVOKE SendDlgItemMessage,hWnd,IDC_STATUS,SB_SETTEXT,1,ADDR SINNLOS
+		.ELSEIF AX==IDC_BUTT02
+			INVOKE SendDlgItemMessage,hWnd,IDC_BUTT04,BM_GETCHECK,0,0
+			.IF EAX==BST_CHECKED
+				INVOKE MessageBox,hWnd,ADDR CHOOSE1,ADDR MSGCAPTION,MB_OK or MB_APPLMODAL
+			.ELSEIF EAX==BST_UNCHECKED
+				INVOKE SendDlgItemMessage,hWnd,IDC_BUTT05,BM_GETCHECK,0,0
+				.IF EAX==BST_CHECKED
+					INVOKE MessageBox,hWnd,ADDR CHOOSE2,ADDR MSGCAPTION,MB_OK or MB_APPLMODAL
+				.ELSE
+					INVOKE MessageBox,hWnd,ADDR CHOOSE3,ADDR MSGCAPTION,MB_OK or MB_APPLMODAL
+				.ENDIF
+			.ENDIF
+		.ENDIF
+	.ELSE
+		MOV EAX,FALSE
+		RET
+	.ENDIF
+		MOV EAX,TRUE
+		RET
+AUSWERTUNG_PROC ENDP
+
+	END start
+	
+end start

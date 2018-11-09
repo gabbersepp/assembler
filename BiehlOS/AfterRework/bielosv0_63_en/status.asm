@@ -1,0 +1,106 @@
+use16
+;ORG 100h
+;mov ax,3
+;TEST AX,1b
+;JNE asd
+;ret
+;asd:
+;mov ah,0eh
+;mov al,"q"
+;int 10h
+;ret
+		MOV AX,CS
+		MOV DS,AX
+		MOV ES,AX
+		;prüfe, ob CPUID Befehl verfügbar ist
+		PUSHFD
+		POP EAX
+		MOV EBX,EAX
+		XOR EAX,200000H;0100000000000000000000b
+		PUSH EAX
+		POPFD
+		PUSHFD
+		POP EAX
+		;CMP EAX,EBX
+		;JnE NO_CPUID
+		XOR EAX,EBX
+		JZ NO_CPUID
+		;TEST EAX,01000000000000000000000b
+		;JE NO_CPUID
+		
+CPUID_OK:
+		LEA BX,[FPU]
+		MOV AH,1
+		INT 21H
+
+		MOV EAX,1
+		CPUID
+		TEST EDX,00000000000000000000001b
+		JE NO_FPU
+		
+		LEA BX,[OK]
+		mov ah,01
+		int 21h
+		
+		JMP CHECK_APIC
+NO_FPU:
+		LEA BX,[NEIN]
+		MOV AH,1
+		INT 21H
+
+CHECK_APIC:
+
+		LEA BX,[APIC]
+		MOV AH,1
+		INT 21H
+
+		TEST EDX,10b
+		JE NO_APIC
+
+		LEA BX,[OK]
+		MOV AH,1
+		INT 21H
+		JMP CHECK_MMX
+
+NO_APIC:
+		LEA BX,[NEIN]
+		MOV AH,1
+		INT 21h
+
+CHECK_MMX:	
+		LEA BX,[MMX]
+		MOV AH,1
+		INT 21h
+
+		TEST EDX,100000000000000000000000b
+		JE NO_MMX
+
+		LEA BX,[OK]
+		MOV AH,1
+		INT 21H
+
+		JMP STATUS_END
+
+NO_MMX:
+		LEA BX,[NEIN]
+		MOV AH,1
+		INT 21h
+
+STATUS_END:
+		
+RETF
+
+NO_CPUID:
+		LEA BX,[NCB]
+		MOV AH,1
+		INT 21h
+RETF
+NCB			DB	"CPUID Befehl nicht verfügbar",13,10,0
+OK			DB	"OK",13,10,0
+FPU			DB	"FPU: ",0
+NEIN			DB	"Nein",13,10,0
+APIC			DB	"APIC: ",0
+MMX			DB	"MMX: ",0
+CPUID_OK_STRING 	DB 	"CPUID Informationen:",13,10,0
+CPUID_NO_STRING		DB	"CPUID Befehl nicht verfuegbar",13,10,0
+db 2048-$ dup(0)
