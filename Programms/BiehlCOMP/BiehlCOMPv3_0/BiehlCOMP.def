@@ -1,0 +1,8 @@
+LIBRARY BiehlCOMP
+EXPORTS
+AddLongDouble
+SubLongDouble
+GetIntLen
+CmpLongInt
+AddLongInt
+SubLongInt

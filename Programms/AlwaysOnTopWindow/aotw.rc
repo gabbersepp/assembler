@@ -1,0 +1,38 @@
+
+#define   IDC_EDIT                   1353797828
+
+1 VERSIONINFO
+FILEVERSION    1,0,0,0
+PRODUCTVERSION 1,0,0,0
+FILETYPE 0x1                  
+{
+    BLOCK "StringFileInfo"
+    {
+        BLOCK "040704B0"    
+        {
+            VALUE "CompanyName", "Josef Biehler"
+            VALUE "FileDescription", "Textfenster, das der schnellen Texterfassung dient."
+            VALUE "FileVersion", "1.0"
+            VALUE "InternalName", "aotw"
+            VALUE "LegalCopyright", "Copyright (C) 2005-2006 by Josef Biehler"
+            VALUE "OriginalFilename", "aotw.exe"
+            VALUE "ProductName", "Always On Top Windows"
+            VALUE "ProductVersion", "1.0"
+        }
+    }
+
+    BLOCK "VarFileInfo"
+    {
+        VALUE "Translation", 0x0407 0x04B0
+    }
+}
+ 5000       ICON     DISCARDABLE "aotw.ico"
+IDD_DLG01 DIALOGEX LOADONCALL MOVEABLE DISCARDABLE 100,108,176,102
+CAPTION "AOTW"
+FONT    8, "MS Sans Serif"
+STYLE   0x14CC0804
+EXSTYLE 0x00000088
+BEGIN
+    CONTROL "",IDC_EDIT,"edit",0x50B150C4,1,1,173,99,0x00000000
+END
+

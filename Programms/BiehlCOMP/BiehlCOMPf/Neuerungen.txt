@@ -1,0 +1,10 @@
+17.04.2007
+-Neue Funktion "urldecode"
+-Neue Funktion "urlencode"
+-Neue Funktion "Len"
+
+08.06.2006
+-Möglichkeit zur Eingabe von Negativen Zahlen möglich
+ (Betroffene Funktionen: SubLongInt, AddLongInt)
+-Neue Funktion "GetVer"
+-Neue Funktion "GetSign"

@@ -1,0 +1,15 @@
+-1 = Allgemein Fehler aufgetreten
+
+100 = Falsches Passwort
+
+200 = Fehler bei NOOP
+
+300 = Fehler bei STAT
+
+400 = Fehler bei RETR
+
+500 = Fehler bei DELE
+
+1000 = Socket Fehler beim Senden
+
+2000 = Socket Fehler beim Empfangen

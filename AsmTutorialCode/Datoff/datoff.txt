@@ -1,0 +1,113 @@
+Daten Segment
+m1 db "Bitte gib einen Dateinamen ein:",10,13,"$"
+v1 db 10,13,"$"
+f1 db "Es trat ein Fehler beim oeffnen der Datei auf.Bitte Taste druecken zum beenden$"
+text db 5000 dup(0)
+buffer1 db 129,0,129 dup(48)
+daten ends
+code segment
+assume ds:daten,cs:code
+start:
+mov ax,daten
+mov ds,ax
+
+mov cl,ES:[80h]
+cmp cl,0
+jna nocomm
+mov ax,0
+a:
+mov bx,82h
+add bx,ax
+mov dl,ES:[bx]
+lea bx,buffer1
+add bx,ax
+mov byte ptr [bx],dl
+inc ax
+dec cl
+cmp cl,0
+je ae
+jmp a
+ae:
+lea bx,buffer1
+add bx,ax
+dec bx
+mov [bx],byte ptr 0
+
+mov ah,09h
+lea dx,v1
+int 21h
+
+jmp datof
+
+nocomm:
+lea dx,m1
+mov ah,09h
+int 21h
+
+mov ah,0ah
+lea dx,buffer1
+int 21h
+
+mov ah,09h
+lea dx,v1
+int 21h
+
+lea bx,buffer1
+inc bx
+mov cl,[bx]
+mov ax,0
+a2:
+lea bx,buffer1
+add bx,ax
+inc bx
+inc bx
+mov dl,byte ptr [bx]
+lea bx,buffer1
+add bx,ax
+mov [bx],byte ptr dl
+inc ax
+dec cl
+cmp cl,0
+je a2e
+jmp a2
+a2e:
+lea bx,buffer1
+add bx,ax
+mov [bx],byte ptr 0
+
+
+datof:
+mov ah,3dh
+mov al,0
+lea dx,buffer1
+int 21h
+jc fehler
+
+mov bx,ax
+mov ah,3fh
+mov cx,5000
+lea dx,text
+int 21h
+jc fehler
+
+lea bx,text
+add bx,ax
+inc bx
+mov [bx],byte ptr "$"
+lea dx,text
+mov ah,09h
+int 21h
+
+fehler:
+jnc ende
+mov ah,09h
+lea dx,f1
+int 21h
+mov ah,01h
+int 21h
+ende:
+mov ah,4ch
+int 21h
+
+code ends
+end start

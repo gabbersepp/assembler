@@ -1,0 +1,9 @@
+biehler-josef.de
+biehler.moosbach@freenet.de
+(C) 2005-2006 by Josef Biehler
+
+Dies ist der Code und die Binärdatei zum zweiten Teil des Tutorials.
+Ich garantiere nicht, dass alles arbeitet, wie es arbeiten soll und hafte für keine Schäden!
+
+Das OS kann emuliert werden oder in den 1. Sektor einer FD gebannt werden und der PC davon gestartet werden.
+Achtung: Alle Dateien auf der Diskette gehen verloren!

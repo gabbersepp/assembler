@@ -1,0 +1,196 @@
+Daten Segment
+m2 db "Unter welchem Dateinamen möchten sie die Datei speichern?",13,10,"$"
+fehler1 db "Fehler beim Öffnen der Datei","$"
+fehler2 db "Die Datei ist bereits vorhanden.Überschreiben (u) oder Abbrechen (a)?","$"
+dname db 20,0,20 DUP (0)
+buffer1 db 255,0,255 DUP (0)
+buffern db 20 dup (0)
+buffer11 db 255 dup (0)
+ibuffern dw 0
+ids db 0
+Daten Ends
+Code Segment
+Assume cs:code,ds:daten
+start:
+mov ax,daten
+mov ds,ax
+
+
+lea dx,m2
+mov ah,09h
+int 21h
+
+mov ah,0ah
+lea dx,dname
+int 21h
+
+mov ah,02h
+mov dl,13
+int 21h
+mov dl,10
+int 21h
+
+lea bx,dname
+inc bx
+mov cl,byte ptr [bx]
+inc bx
+a:
+
+lea bx,dname
+add bx,2
+add bx,ibuffern
+mov dl,[bx]
+
+lea bx,buffern
+add bx,ibuffern
+mov [bx],byte ptr dl
+
+inc bx
+inc ibuffern
+dec cl
+cmp cl,0
+JE weiter
+jmp a
+
+weiter:
+lea bx,buffern
+add bx,ibuffern
+mov [bx],byte ptr "0"
+
+
+;bis hierher Dateinamen kreieren
+
+mov ah,02h
+mov dl,13
+int 21h
+mov dl,10
+int 21h
+
+
+mov ah,0ah
+lea dx,buffer1
+int 21h
+
+mov dl,13
+mov ah,02h
+int 21h
+mov dl,10
+int 21h
+
+
+
+
+mov ibuffern,0
+
+lea bx,buffer1
+inc bx
+mov cl,byte ptr [bx]
+mov ids,cl
+inc bx
+a2:
+
+lea bx,buffer1
+add bx,2
+add bx,ibuffern
+mov dl,[bx]
+
+lea bx,buffer11
+add bx,ibuffern
+mov [bx],byte ptr dl
+
+inc bx
+inc ibuffern
+dec cl
+cmp cl,0
+JE weiter2
+jmp a2
+weiter2:
+
+lea bx,buffer1
+add bx,ibuffern
+add bx,1
+mov [bx],byte ptr 36
+
+
+
+
+
+mov ah,3dh
+mov al,2
+mov dx,offset buffern
+int 21h
+mov bx,ax
+jnc weiterc2
+
+mov ah,3ch
+mov cx,0
+lea dx,buffern
+int 21h
+
+mov ah,3dh
+mov al,2
+mov dx,offset buffern
+int 21h
+
+mov bx,ax
+mov ah,40h
+mov ch,0
+mov cl,ids
+lea dx,buffer11
+int 21h
+
+mov ah,3eh
+int 21h
+
+jmp ende
+
+weiterc:
+cmp ax,6
+jne weiterc2
+lea dx,fehler1
+mov ah,09h
+int 21h
+jmp ende
+
+weiterc2:
+;zugriff verweigert
+lea dx,fehler2
+mov ah,09h
+int 21h
+
+mov ah,01h
+int 21h
+cmp al,"a"
+je ende
+mov ah,41h
+lea dx,buffern
+int 21h
+
+mov ah,3ch
+mov cx,0
+lea dx,buffern
+int 21h
+
+mov ah,3dh
+mov al,2
+lea dx,buffern
+int 21h
+
+mov bx,ax
+mov ah,40h
+mov ch,0
+mov cl,ids
+lea dx,buffer11
+int 21h
+
+
+mov ah,3eh
+int 21h
+
+
+
+ende:
+mov ah,4ch
+int 21h
+code ends
+end start

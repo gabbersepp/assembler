@@ -1,0 +1,9 @@
+v1.0:
+Funktionen
+-------------
+Es sind die grundlegenden Befehle eingebaut
+
+Bekannte Bugs
+-------------
+Leider funktionieren die Labels nicht immer.
+Bisher weis ich allerdings nicht, wieso und wann dies so ist

@@ -1,0 +1,27 @@
+
+
+1 VERSIONINFO
+FILEVERSION    0,4,0,0
+PRODUCTVERSION 0,4,0,0
+FILETYPE 0x1                  
+{
+    BLOCK "StringFileInfo"
+    {
+        BLOCK "040704B0"    
+        {
+            VALUE "CompanyName", "Josef Biehler"
+            VALUE "FileDescription", "DLL zum bearbeiten von theoretisch unendlich langen Zahlen"
+            VALUE "FileVersion", "0.4.0"
+            VALUE "InternalName", "bcomp"
+            VALUE "LegalCopyright", "Copyright (C) 2005-2006 by Josef Biehler"
+            VALUE "OriginalFilename", "BiehlCOMP.dll"
+            VALUE "ProductName", "Biehler COMPUTE"
+            VALUE "ProductVersion", "0.4.0"
+        }
+    }
+
+    BLOCK "VarFileInfo"
+    {
+        VALUE "Translation", 0x0407 0x04B0
+    }
+}

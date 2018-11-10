@@ -1,0 +1,23 @@
+model tiny
+CODE SEGMENT
+ASSUME CS:CODE
+org 100h
+start:
+mov bx,80h
+mov cl,byte ptr DS:[bx]
+cmp cl,0
+jna ende
+inc bx
+a:
+inc bx
+mov dl,DS:[BX]
+mov ah,02h
+int 21h
+dec cl
+cmp cl,0
+je ende
+jmp a
+ende:
+ret
+code ends
+end start

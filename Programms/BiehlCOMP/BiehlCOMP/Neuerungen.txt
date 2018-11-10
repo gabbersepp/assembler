@@ -1,0 +1,29 @@
+08.07.2007
+-Neue Funktion "POP3_Dele"
+-Neue Funktion "POP3_Rset"
+-Überarbeitete Funktion "POP3_List"
+
+12.06.2007
+-Neue Funktion "POP3_Init"
+-Neue Funktion "POP3_Connect"
+-Neue Funktion "POP3_Noop"
+-Neue Funktion "POP3_List"
+-Neue Funktion "POP3_Stat"
+-Neue Funktion "POP3_Quit"
+
+06.05.2007
+-Neue Funktion "Explode"
+-Neue Funktion "ExplodeFree"
+-Neue Funktion "Pos"
+-Neue Funktion "Len"
+
+17.04.2007
+-Neue Funktion "urldecode"
+-Neue Funktion "urlencode"
+-Neue Funktion "Len"
+
+08.06.2006
+-Möglichkeit zur Eingabe von Negativen Zahlen möglich
+ (Betroffene Funktionen: SubLongInt, AddLongInt)
+-Neue Funktion "GetVer"
+-Neue Funktion "GetSign"

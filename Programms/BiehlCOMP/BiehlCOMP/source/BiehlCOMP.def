@@ -1,0 +1,24 @@
+LIBRARY BiehlCOMP
+EXPORTS
+AddLongDouble
+SubLongDouble
+GetIntLen
+CmpLongInt
+AddLongInt
+SubLongInt
+GetSign
+GetVer
+Len
+UrlEncode
+UrlDecode
+Explode
+StrCopy
+Pos
+ExplodeFree
+POP3_Init
+POP3_Connect
+POP3_Noop
+POP3_Stat
+POP3_GetLastError
+POP3_List
+POP3_Quit
