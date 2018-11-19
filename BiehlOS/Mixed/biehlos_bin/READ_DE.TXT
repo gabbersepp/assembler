@@ -1,0 +1,22 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; BiehlOS
+;; Mein Versuch, ein Betriebssystem zu entwickeln
+;; (c) 2005-2006 by Josef Biehler
+;; http://biehler-josef.de
+;; biehlos@biehler-josef.de
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	Hilfedatei zur Binärdatei des BiehlOS
+
+	INSTALLATION
+	------------
+	Um das BiehlOS auszuprobieren, wird ein Emulator benötigt.
+	Dazu das Bochs Packet (http://biehler-josef.de/data/bochsa.zip) herunterladen.
+	Das Archiv entpacken, die Binärdatei "boot.bin" und die Datei bochsrc.bxrc in das Verzeichnis kopieren.
+	Eventuelle Dateien überschreiben.
+	Dann start_os.bat ausführen. fertig!
+	
+	BiehlOS (c) 2005-2006 by Josef Biehler
+
+
+    Das BiehlOS und Teile daraus bietet ihnen keinerlei Garrantien.

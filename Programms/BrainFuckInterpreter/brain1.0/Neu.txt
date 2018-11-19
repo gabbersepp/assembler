@@ -1,0 +1,8 @@
+Neue Funktionen (23.03.06):
+-Fehlerbehandlungsroutinen
+
+Bekannte Bugs (23.03.06):
+-Keine
+
+Entfernte Bugs (23.03.06):
+-Keine

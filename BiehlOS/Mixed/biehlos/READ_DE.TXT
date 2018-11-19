@@ -1,0 +1,91 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; BiehlOS
+;; Mein Versuch, ein Betriebssystem zu entwickeln
+;; (c) 2005-2006 by Josef Biehler
+;; http://biehler-josef.de
+;; biehlos@biehler-josef.de
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	
+	Die vorliegende Hilfedatei bezieht sich auf die Version 0.2.3 Beta 2
+	
+	INHALT:
+	-------
+		1. Einführung
+		2. Was ist neu?
+		3. Befehlsübersicht
+		4. Programmübersicht
+		5. Installation
+		6. Urheberechtliche Hinweise
+		
+	1. EINFÜHRUNG
+	-------------
+	Das BiehlOS ist ein OpenSource Betriebsssystem und unterstützt 
+	in aktueller Version lediglich 1,44MB Disketten.
+	Das komplette Betriebssystem wurde in der Assemblersprache geschrieben.
+	Als Assembler wurde der FASM verwendet.
+	Die kompletten Sourcecodes sollten im Ordner src\ liegen.
+	
+	Das BiehlOS ist ein reines RealMode Betriebssystem, benötigt aber mindestens
+	einen 386er Prozessor (oder kompatibel).
+	
+	Das Dateisystem FAT12 (auch Ordnerstruktur) wird unterstützt.
+	
+	2. WAS IST NEU?
+	---------------
+	* Neustart des BiehlOS
+	
+	3. BEFEHLSÜBERSICHT
+	-------------------
+	Groß-oder Kleinschreibung ist nicht wichtig
+	
+	In eckigen Klammern angegebene Parameter sind optional.
+	In geschweiften Klammern angegebenen Klammern bedeutet "oder".
+	z.b. {1|2} meint. dass entweder 1 oder 2 übergeben werden muss
+	Parameter sind durch ein Leerzeichen voneinander zu trennen.
+	
+		help            Zeigt eine kurze Übersicht über alle Befehle an.
+	
+	
+	4. PROGRAMMÜBERSICHT
+	--------------------
+	Hier sind alle Systemprogramme und Treiber aufgelistet, die mit dem BiehlOS
+	ausgeliefert werden.
+	
+	Test.Bin			Lediglich ein Testprogramm
+					
+	
+	5. INSTALLATION
+	---------------
+	Um das BiehlOS Packet auszuprobieren, eine leere Diskette einlegen und die Setup.bat ausführen.
+	Den Anweisungen folgen.
+	Nach dem Setup kann von der Diskette gebootet werden, oder mittels Emulator das BiehlOS getestet werden.
+	Dazu muss das Bochs Packet (http://biehler-josef.de/data/bochsa.zip) heruntergeladen werden.
+	Das Archiv entpacken und die start_os.bat ausführen.
+	Die Diskette muss hierbei noch im Laufwerk sein.
+
+	6. URHEBERRECHTLICHE HINWEISE
+	-----------------------------
+	Das BiehlOS steht unter der GNU GPL als OpenSource zur Verfügung und kann 
+	frei heruntergeladen werden.
+	Sie müssen allerdings der GNU GPL zustimmen, um das BiehlOS und Teile
+	daraus verwenden zu können.
+	
+	BiehlOS (c) 2005-2006 by Josef Biehler
+   
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+    You should have received a copy of the GNU General Public License 
+    along with this program; if not, write to the Free Software 
+    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, 
+    USA.
+
+    Das BiehlOS und Teile daraus bietet ihnen keinerlei Garrantien.
+	
+	Mehr Informationen siehe gpl.txt

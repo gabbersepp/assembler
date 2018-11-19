@@ -1,0 +1,30 @@
+Neue Funktionen (v1.1):
+-Es ist nun eine "Debug" Möglichkeit vorhanden
+
+-Bekannte Bugs (v1.1):
+-Keine
+
+Entfernte Bugs (v1.1):
+-Keine
+
+-----------------------------------------
+
+Neue Funktionen (v1.01):
+-Keine
+
+Bekannte Bugs (v1.01):
+-Keine
+
+Entfernte Bugs (v1.01):
+-"Zeichen einlesen" - Routine verbessert
+
+-----------------------------------------
+
+Neue Funktionen (v1.0):
+-Fehlerbehandlungsroutinen
+
+Bekannte Bugs (v1.0):
+-Keine
+
+Entfernte Bugs (v1.0):
+-Keine
